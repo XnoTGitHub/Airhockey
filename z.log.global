@@ -1,0 +1,137 @@
+** compiled at:     Jun 18 2021 12:23:12
+** execution start: 2021-06-25 16:31:55:83638
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:initCmdLine:602(1) ** cmd line arguments: './x.exe '
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:initCmdLine:606(1) ** run path: '/home/florian/git/robotics-course/Project'
+/home/florian/git/robotics-course/rai/rai/Core/graph.cpp:initParameters:1356(3) opening config file 'rai.cfg'
+/home/florian/git/robotics-course/rai/rai/Core/graph.cpp:initParameters:1362(3)  - failed
+/home/florian/git/robotics-course/rai/rai/Core/graph.cpp:initParameters:1365(1) ** parsed parameters:
+{}
+
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/Project'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_file:1053(3) entering path '../scenarios' from '/home/florian/git/robotics-course/Project'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'project_challenge.g'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/scenarios'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'stadium.g'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/scenarios'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'airhockey_table.g'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:parse:218(-1) (LINE=49) parsing of constant string '}' failed! (read instead: 'Ð')
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/scenarios'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/scenarios'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'panda_moveGripper.g'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/scenarios'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_file:1053(3) entering path '../rai-robotModels/panda' from '/home/florian/git/robotics-course/scenarios'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'panda_clean.g'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/scenarios'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/scenarios'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'gripper.g'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/scenarios'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/scenarios'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/scenarios'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'panda_moveGripper.g'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/scenarios'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_file:1053(3) entering path '../rai-robotModels/panda' from '/home/florian/git/robotics-course/scenarios'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'panda_clean.g'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/scenarios'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/scenarios'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'gripper.g'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/scenarios'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/scenarios'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/scenarios'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'pusher.g'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/scenarios'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/scenarios'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/scenarios'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'rndObjects.g'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/scenarios'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_file:1053(3) entering path 'meshes/visual' from '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'link0.ply'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_file:1053(3) entering path 'meshes/visual' from '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'link1.ply'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_file:1053(3) entering path 'meshes/visual' from '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'link2.ply'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_file:1053(3) entering path 'meshes/visual' from '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'link3.ply'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_file:1053(3) entering path 'meshes/visual' from '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'link4.ply'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_file:1053(3) entering path 'meshes/visual' from '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'link5.ply'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_file:1053(3) entering path 'meshes/visual' from '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'link6.ply'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_file:1053(3) entering path 'meshes/visual' from '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'link7.ply'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_file:1053(3) entering path 'meshes/visual' from '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'link0.ply'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_file:1053(3) entering path 'meshes/visual' from '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'link1.ply'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_file:1053(3) entering path 'meshes/visual' from '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'link2.ply'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_file:1053(3) entering path 'meshes/visual' from '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'link3.ply'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_file:1053(3) entering path 'meshes/visual' from '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'link4.ply'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_file:1053(3) entering path 'meshes/visual' from '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'link5.ply'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_file:1053(3) entering path 'meshes/visual' from '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'link6.ply'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_file:1053(3) entering path 'meshes/visual' from '/home/florian/git/robotics-course/rai-robotModels/panda'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'link7.ply'
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/Project'
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)         KOMO/verbose =     1 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3) KOMO/animateOptimization =     0 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/KOMO/../Core/util.ipp:getParameterBase:35(3)          KOMO/solver = sparse [N3rai4EnumINS_10KOMOsolverEEE] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)          opt/verbose =     1 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)    opt/stopTolerance =  0.01 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)   opt/stopFTolerance =   0.1 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)   opt/stopGTolerance =    -1 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)        opt/stopEvals =  1000 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)        opt/stopIters =  1000 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)       opt/stopOuters =  1000 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)    opt/stopLineSteps =    10 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)    opt/stopTinySteps =    10 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)         opt/initStep =     1 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)          opt/minStep =    -1 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)          opt/maxStep =   0.2 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)          opt/damping =     1 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)          opt/stepInc =   1.5 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)          opt/stepDec =   0.5 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)       opt/dampingInc =     1 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)       opt/dampingDec =     1 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)            opt/wolfe =  0.01 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)   opt/nonStrictSteps =     0 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)    opt/allowOverstep =     0 [b] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3) opt/constrainedMethod =     2 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)           opt/muInit =     1 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)         opt/muLBInit =     1 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)        opt/aulaMuInc =     5 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)                 seed =     0 [j] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)         KOMO/verbose =     1 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3) KOMO/animateOptimization =     0 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/KOMO/../Core/util.ipp:getParameterBase:35(3)          KOMO/solver = sparse [N3rai4EnumINS_10KOMOsolverEEE] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)         KOMO/verbose =     1 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3) KOMO/animateOptimization =     0 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/KOMO/../Core/util.ipp:getParameterBase:35(3)          KOMO/solver = sparse [N3rai4EnumINS_10KOMOsolverEEE] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)         KOMO/verbose =     1 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3) KOMO/animateOptimization =     0 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/KOMO/../Core/util.ipp:getParameterBase:35(3)          KOMO/solver = sparse [N3rai4EnumINS_10KOMOsolverEEE] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)         KOMO/verbose =     1 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3) KOMO/animateOptimization =     0 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/KOMO/../Core/util.ipp:getParameterBase:35(3)          KOMO/solver = sparse [N3rai4EnumINS_10KOMOsolverEEE] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)         KOMO/verbose =     1 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3) KOMO/animateOptimization =     0 [d] (default!)
+/home/florian/git/robotics-course/rai/rai/KOMO/../Core/util.ipp:getParameterBase:35(3)          KOMO/solver = sparse [N3rai4EnumINS_10KOMOsolverEEE] (default!)
