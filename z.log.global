@@ -1,5 +1,5 @@
 ** compiled at:     Jun 18 2021 12:23:12
-** execution start: 2021-06-25 16:31:55:83638
+** execution start: 2021-06-27 19:31:18:610494
 /home/florian/git/robotics-course/rai/rai/Core/util.cpp:initCmdLine:602(1) ** cmd line arguments: './x.exe '
 /home/florian/git/robotics-course/rai/rai/Core/util.cpp:initCmdLine:606(1) ** run path: '/home/florian/git/robotics-course/Project'
 /home/florian/git/robotics-course/rai/rai/Core/graph.cpp:initParameters:1356(3) opening config file 'rai.cfg'
@@ -14,7 +14,7 @@
 /home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'stadium.g'
 /home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/scenarios'
 /home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'airhockey_table.g'
-/home/florian/git/robotics-course/rai/rai/Core/util.cpp:parse:218(-1) (LINE=49) parsing of constant string '}' failed! (read instead: 'Ð')
+/home/florian/git/robotics-course/rai/rai/Core/util.cpp:parse:218(-1) (LINE=49) parsing of constant string '}' failed! (read instead: 'à')
 /home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/scenarios'
 /home/florian/git/robotics-course/rai/rai/Core/util.cpp:cd_start:1045(3) entering path '/home/florian/git/robotics-course/scenarios'
 /home/florian/git/robotics-course/rai/rai/Core/util.cpp:getIs:1082(3) opening input file 'panda_moveGripper.g'
@@ -135,3 +135,4 @@
 /home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3)         KOMO/verbose =     1 [d] (default!)
 /home/florian/git/robotics-course/rai/rai/Core/util.ipp:getParameterBase:35(3) KOMO/animateOptimization =     0 [d] (default!)
 /home/florian/git/robotics-course/rai/rai/KOMO/../Core/util.ipp:getParameterBase:35(3)          KOMO/solver = sparse [N3rai4EnumINS_10KOMOsolverEEE] (default!)
+/home/florian/git/robotics-course/rai/rai/Gui/opengl.cpp:MouseButton:2291(1) FOCUS: world coords: [-0.329107, -0.660716, 0.969075]
