@@ -17,6 +17,10 @@ using namespace cv;
 
 uint NUMB_OF_STEPS = 20;
 
+//double f = 0.895;
+//f *= 360.; //focal length is needed in pixels (height!), not meters!
+arr Fxypxy = {322.2, 322.2, 320., 180.};
+
 //===========================================================================
 
 arr findObject(byteA& _rgb, floatA& _depth, int color_of_object){
@@ -171,7 +175,62 @@ void grab_Green(rai::Simulation& S,rai::Configuration& C, arr Pos_Set_Hight, dou
   }
   //cout << "pos red: " << objred->getPosition() << endl;
 }
-arr calc_veloctiy(rai::Simulation& S, rai::Frame* puck, arr q){
+arr calc_veloctiy(rai::Simulation& S, rai::Frame* objblue, arr q){
+  byteA _rgb;
+  floatA _depth;
+
+  S.getImageAndDepth(_rgb, _depth);
+  arr blueObjRelPos = findObject(_rgb, _depth, BLUE); //redObject's position in image space
+  if(!!blueObjRelPos){
+    depthData2point(blueObjRelPos, Fxypxy);
+    objblue->setRelativePosition(blueObjRelPos);
+  }
+  rai::wait();
+  arr Pos_Puck = objblue->getPosition();
+  cout << "POS_Puck : " << Pos_Puck << endl;
+  S.step(q, .05, S._position);
+  S.step(q, .05, S._position);
+  S.step(q, .05, S._position);
+
+  rai::wait();
+  objblue->setRelativePosition({0,0,0});
+  S.getImageAndDepth(_rgb, _depth);
+  arr blueObjRelPos_two = findObject(_rgb, _depth, BLUE); //redObject's position in image space
+  cout << "relPos: " << blueObjRelPos_two << endl;
+  if(!!blueObjRelPos_two){
+    cout << "if" << endl;
+    depthData2point(blueObjRelPos_two, Fxypxy);
+    cout << "relPos: " << blueObjRelPos_two << endl;
+    objblue->setRelativePosition(blueObjRelPos_two);
+  }
+  cout << "objblue->getPosition(): " << objblue->getPosition() << endl;
+  arr Velo = (objblue->getPosition()-Pos_Puck)/0.15;
+  
+  //if(abs(Velo(1))>0.5)
+    //Velo = Velo/1.4;
+  return Velo;
+}
+float calc_time(arr Velo, arr Position){
+
+  cout << "distance to collision: " << 0.25+Position(0)*Position(0) << endl;
+  //one-step approximation
+  float xpos = (0.25+Position(0)*Position(0))/Velo(1) * Velo(0) + Position(0);
+
+  if(xpos < -0.48)
+    xpos = -0.48;
+  if(xpos > 0.48)
+    xpos = 0.48;
+
+  cout << "approx. of the x value: " << xpos << endl;
+  cout << "distance to collision: " << 0.25+xpos*xpos << endl;
+
+  /*if(abs(xpos)>0.4){
+    return(0.25+(xpos*xpos))/Velo(1);
+  }*/
+
+  return (0.3+(xpos*xpos)/1.5)/Velo(1);
+}
+/*arr calc_veloctiy(rai::Simulation& S, rai::Frame* puck, arr q){
 
   arr Pos_Puck = puck->getPosition(); //------------------geschummelt!!
   cout << "POS_Puck : " << Pos_Puck << endl;
@@ -183,7 +242,7 @@ arr calc_veloctiy(rai::Simulation& S, rai::Frame* puck, arr q){
   arr Velo = (puck->getPosition()-Pos_Puck)/0.1;
   
   return Velo;
-}
+}*/
 
 //===========================================================================
 
@@ -193,13 +252,10 @@ void using_KOMO_for_PathPlanning(){
 
   arr q;
 
-  double f = 0.895;
-  f *= 360.; //focal length is needed in pixels (height!), not meters!
-  arr Fxypxy = {f, f, 320., 180.};
-
   //-- MODEL WORLD configuration, this is the data structure on which you represent
   rai::Configuration C;
-  C.addFile("../scenarios/project_challenge.g");
+  //C.addFile("../scenarios/project_challenge.g");
+  C.addFile("../Project/project_challenge.g");
 
   //delete frames with certain names
   for(uint o=1; o<30; o++){
@@ -212,6 +268,7 @@ void using_KOMO_for_PathPlanning(){
   puck->setPosition({0, 0.5, 1.});
   puck->setMass(0.1);
   puck->setContact(1); // What is this line really doing?
+  //puck->ats.newNode<double>("restitution", 1.); 
 
   rai::Frame *pusher_red = C["stick_red"];
   pusher_red->setColor({1.,0,0}); //set the color of one objet to red!
@@ -392,26 +449,32 @@ void using_KOMO_for_PathPlanning(){
 
   	int found = 0;
   	while(!found){
-  		cout << "wait ";
-  		rai::wait(tau);
-      S.step(q, tau, S._position);
   		S.getImageAndDepth(_rgb, _depth); 
   		arr blueObjRelPos_next = findObject(_rgb, _depth, BLUE);
   		cout << "blueObjRelPos_next: " << blueObjRelPos_next << endl;
-  		if (!!blueObjRelPos_next && blueObjRelPos_next(1) > 80){
+  		if (!!blueObjRelPos_next && blueObjRelPos_next(1) > 40){
         depthData2point(blueObjRelPos_next, Fxypxy);
         objblue->setRelativePosition(blueObjRelPos_next);
   			found = 1;
         //rai::wait();
-  		}
+  		} else{
+        cout << "wait ";
+        rai::wait(0.05);
+        S.step(q, 0.05, S._position);
+      }
   	}
   	cout << "finishLoop" << endl;
 	  //Pos_Set_Hight = puck->getPosition(); //------------------geschummelt!!
     Pos_Set_Hight = objblue->getPosition();
   	cout << "POS_SET_HIGHT : " << Pos_Set_Hight << endl;
-    arr Velo = calc_veloctiy(S,puck,q);
+    //arr Velo = calc_veloctiy(S,puck,q);
+    arr Velo = calc_veloctiy(S,objblue,q);
   	cout << "Velocity: " << Velo << endl;
-  	arr Prediction = puck->getPosition() + Velo;
+    //float time = calc_time(Velo,{0,0,0});
+    float time = calc_time(Velo,objblue->getPosition());
+    cout << "time: " << time << endl;
+    arr Shift = {Velo(0) * time,Velo(1) * time,Velo(2) * time};
+  	arr Prediction = puck->getPosition() + Shift;
   	cout << "Prediction: " << Prediction << endl;
   	Pos_Set_Hight = Prediction;
   	Pos_Set_Hight(2) = 1.05;
@@ -422,16 +485,16 @@ void using_KOMO_for_PathPlanning(){
 
   	KOMO komoLOOPRed;                     //create a solver
   	komoLOOPRed.setModel(C, true);        //tell it use C as the basic configuration (internally, it will create copies of C on which the actual optimization runs)
-  	komoLOOPRed.setTiming(2., NUMB_OF_STEPS, 5., 2);  //we want to optimize a single step (1 phase, 1 step/phase, duration=1, k_order=1)
+  	komoLOOPRed.setTiming(time+1, NUMB_OF_STEPS, 5., 2);  //we want to optimize a single step (1 phase, 1 step/phase, duration=1, k_order=1)
   	komoLOOPRed.add_qControlObjective({}, 2, 1.); 
 
   	A = {0.,0.,1.};
-  	komoLOOPRed.addObjective({0.,2.}, FS_position, {"R_gripperCenter"}, OT_eq, A, {0.,0.,1.});
-    komoLOOPRed.addObjective({0.4}, FS_position, {"R_gripperCenter"}, OT_sos,{1e1}, Pos_Set_Hight+arr({1,3}, { 0,.15,0}));
+  	komoLOOPRed.addObjective({0.,time+1}, FS_position, {"R_gripperCenter"}, OT_eq, A, {0.,0.,1.});
+    komoLOOPRed.addObjective({time-0.3}, FS_position, {"R_gripperCenter"}, OT_sos,{1e1}, Pos_Set_Hight+arr({1,3}, { 0,.2,0}));
   
-   	komoLOOPRed.addObjective({1.}, FS_position, {"R_gripperCenter"}, OT_sos,{1e1}, Pos_Set_Hight);
-    komoLOOPRed.addObjective({.5,2.0}, FS_scalarProductXZ, {"R_gripperCenter","world"}, OT_eq);
-  	komoLOOPRed.addObjective({.5,2.0}, FS_scalarProductYZ, {"R_gripperCenter","world"}, OT_eq);
+   	komoLOOPRed.addObjective({time}, FS_position, {"R_gripperCenter"}, OT_sos,{1e1}, Pos_Set_Hight-arr({1,3}, { 0,.2,0}));
+    komoLOOPRed.addObjective({.5,time+1}, FS_scalarProductXZ, {"R_gripperCenter","world"}, OT_eq);
+  	komoLOOPRed.addObjective({.5,time+1}, FS_scalarProductYZ, {"R_gripperCenter","world"}, OT_eq);
 
   	komoLOOPRed.optimize();
   	arr old_Position = puck->getPosition();
@@ -443,7 +506,7 @@ void using_KOMO_for_PathPlanning(){
   		arr new_Position = puck->getPosition();
 
     	cout << t << ": " << old_Position << " : " << new_Position  << " i: " << i << endl;
-    	if(t==19 && i==0){
+    	if(t==(uint)time*NUMB_OF_STEPS && i==0){
   			rai::wait();
   		}
     	rai::wait(tau); //remove to go faster
@@ -453,66 +516,69 @@ void using_KOMO_for_PathPlanning(){
   	//rai::wait(); //TODO: otherwise the opengl gets hung up?
 
   	////////////////////////////////////////////////
-    double tau_small = 0.05;
+    double tau_small = 0.01;
   	//GREENs Turn
   	S.cameraview().addSensor("camera_green");
     
     puck->setPosition({0,0,0});
   	found = 0;
   	while(!found){
-  		cout << "wait ";
-  		rai::wait(tau_small);
-		  S.step(q, tau_small, S._position);
   		S.getImageAndDepth(_rgb, _depth); 
   		arr blueObjRelPos_next = findObject(_rgb, _depth, BLUE);
   		cout << "blueObjRelPos_next: " << blueObjRelPos_next << endl;
-  		if (!!blueObjRelPos_next && blueObjRelPos_next(1) > 80){
+  		if (!!blueObjRelPos_next && blueObjRelPos_next(1) > 25){
   			found = 1;
         depthData2point(blueObjRelPos_next, Fxypxy);
         objblue->setRelativePosition(blueObjRelPos_next);
         cout << "objblue Pos: " << objblue->getPosition()  << "puck Pos: " << puck->getPosition() << endl;
 
         rai::wait();
-  		}
+  		}else{
+        cout << "wait ";
+        rai::wait(tau_small);
+        S.step(q, tau_small, S._position);
+      }
   	}
-    Pos_Set_Hight = -objblue->getPosition();
-    Velo = calc_veloctiy(S,puck,q);
+    //Velo = calc_veloctiy(S,puck,q);
+    Velo = calc_veloctiy(S,objblue,q);
   	cout << "Velocity: " << Velo << endl;
-  	Prediction = Pos_Set_Hight + Velo;
+  	time = calc_time(Velo,objblue->getPosition());
+    cout << "time: " << time << endl;
+    Shift = {Velo(0) * time,Velo(1) * time,Velo(2) * time};
+    Prediction = -objblue->getPosition() - Shift;
   	cout << "Prediction: " << Prediction << endl;
   	Pos_Set_Hight = Prediction;
   	Pos_Set_Hight(2) = 1.05;
   	objblue->setPosition(Pos_Set_Hight);
-  	rai::wait();
+  	rai::wait(); 
   	cout << "SET_POS_HIGHT: " << Pos_Set_Hight << endl;
+    float komo_time = 2.;
+    if(time > 1.)
+      komo_time = time + 1.;
 
 
   	KOMO komoLOOPGreen;                    
   	komoLOOPGreen.setModel(C, true);        
-  	komoLOOPGreen.setTiming(2., NUMB_OF_STEPS, 5., 2);  //we want to optimize a single step (1 phase, 1 step/phase, duration=1, k_order=1)
+  	komoLOOPGreen.setTiming(komo_time, NUMB_OF_STEPS, 5., 2); 
   	komoLOOPGreen.add_qControlObjective({}, 2, 1.); 
   	A = {0.,0.,1.};
-  	komoLOOPGreen.addObjective({0.,2.}, FS_position, {"L_gripperCenter"}, OT_eq, A, {0.,0.,1.});
-  	//komo2.addObjective({1.}, FS_position, {"R_gripperCenter"}, OT_eq,arr(2,3 {1.,0,0, 0,1,0}), Pos_Set_Hight);
-  	komoLOOPGreen.addObjective({0.7}, FS_position, {"L_gripperCenter"}, OT_sos,{1e1}, Pos_Set_Hight-arr({1,3}, { 0,.15,0}));
-  	komoLOOPGreen.addObjective({1.}, FS_position, {"L_gripperCenter"}, OT_sos,{1e1}, Pos_Set_Hight);
-    komoLOOPGreen.addObjective({1.,2.0}, FS_scalarProductXZ, {"L_gripperCenter","world"}, OT_eq);
-  	komoLOOPGreen.addObjective({1.,2.0}, FS_scalarProductYZ, {"L_gripperCenter","world"}, OT_eq);
+  	komoLOOPGreen.addObjective({0.,komo_time}, FS_position, {"L_gripperCenter"}, OT_eq, A, {0.,0.,1.});
+  	komoLOOPGreen.addObjective({time-0.3}, FS_position, {"L_gripperCenter"}, OT_sos,{1e1}, Pos_Set_Hight-arr({1,3}, { 0,0.2,0}));
+  	komoLOOPGreen.addObjective({time}, FS_position, {"L_gripperCenter"}, OT_sos,{1e1}, Pos_Set_Hight+arr({1,3}, { 0,.2,0}));
+    komoLOOPGreen.addObjective({0.5,komo_time}, FS_scalarProductXZ, {"L_gripperCenter","world"}, OT_eq);
+  	komoLOOPGreen.addObjective({0.5,komo_time}, FS_scalarProductYZ, {"L_gripperCenter","world"}, OT_eq);
   	komoLOOPGreen.optimize();
-  	old_Position = puck->getPosition();
 
   	for(uint t=0;t<komoLOOPGreen.T;t++){
   		q = komoLOOPGreen.getConfiguration_qOrg(t);
       C.setJointState(q);
       C.watch(false, "optimized configuration");
-  		arr new_Position = puck->getPosition();
-  		arr Velocity = (new_Position-old_Position)/tau_small;
-    	cout << t << ": " << old_Position << " : " << new_Position  << " i: " << i << endl;
-    	if(t==19 && i==0){
+  		
+    	cout << t << ": " << puck->getPosition() << " i: " << i << endl;
+    	//if(t==(uint)((komo_time-1)*NUMB_OF_STEPS) && i==0){
   			rai::wait();
-  		}
+  		//}
     	rai::wait(tau_small); //remove to go faster
-    	old_Position = new_Position;
     	S.step(q, tau_small, S._position);
   	}
   	rai::wait(); //TODO: otherwise the opengl gets hung up?
