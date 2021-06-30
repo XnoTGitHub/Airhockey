@@ -2,10 +2,10 @@ Include:'airhockey_table.g'
 
 
 Prefix: "L_"
-Include: '../scenarios/panda_moveGripper.g'
+Include: '../rai-robotModels/scenarios/panda_moveGripper.g'
 
 Prefix: "R_"
-Include: '../scenarios/panda_moveGripper.g'
+Include: '../rai-robotModels/scenarios/panda_moveGripper.g'
 
 camera_red(ground){
     Q:<t(-0.01 .8 1.1) d(160 1 0 0)d(180 1 0 0)d(180 0 0 1)>,

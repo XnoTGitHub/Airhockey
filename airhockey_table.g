@@ -45,4 +45,4 @@ band_short_two (plate){
     contact, logical:{ }
     #friction:.1
     restitution: 1.
-
+}

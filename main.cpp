@@ -23,6 +23,15 @@ arr Fxypxy = {322.2, 322.2, 320., 180.};
 
 //===========================================================================
 
+void subStep(rai::Simulation& S, const arr& u_control, double tau, rai::Simulation::ControlMode u_mode, uint subSteps=10) {
+  for(uint s=0;s<subSteps;s++){
+    S.step(u_control, tau/subSteps, u_mode);
+  }
+}
+
+//===========================================================================
+
+
 arr findObject(byteA& _rgb, floatA& _depth, int color_of_object){
   cv::Mat rgb = CV(_rgb);
   cv::Mat depth = CV(_depth);
@@ -125,7 +134,7 @@ void grab_Red(rai::Simulation& S,rai::Configuration& C, arr Pos_Set_Hight, doubl
 
     cout << t << endl;
     rai::wait(tau); //remove to go faster
-    S.step(q, tau, S._position);
+    subStep(S,q, tau, S._position);
   }
   //cout << "pos red: " << objred->getPosition() << endl;
 }
@@ -171,7 +180,7 @@ void grab_Green(rai::Simulation& S,rai::Configuration& C, arr Pos_Set_Hight, dou
 
     cout << t << endl;
     rai::wait(tau); //remove to go faster
-    S.step(q, tau, S._position);
+    subStep(S,q, tau, S._position);
   }
   //cout << "pos red: " << objred->getPosition() << endl;
 }
@@ -188,9 +197,9 @@ arr calc_veloctiy(rai::Simulation& S, rai::Frame* objblue, arr q){
   rai::wait();
   arr Pos_Puck = objblue->getPosition();
   cout << "POS_Puck : " << Pos_Puck << endl;
-  S.step(q, .05, S._position);
-  S.step(q, .05, S._position);
-  S.step(q, .05, S._position);
+  subStep(S,q, .05, S._position);
+  subStep(S,q, .05, S._position);
+  subStep(S,q, .05, S._position);
 
   rai::wait();
   objblue->setRelativePosition({0,0,0});
@@ -234,9 +243,9 @@ float calc_time(arr Velo, arr Position){
 
   arr Pos_Puck = puck->getPosition(); //------------------geschummelt!!
   cout << "POS_Puck : " << Pos_Puck << endl;
-  S.step(q, 0.05, S._position);
+  subStep(S,q, 0.05, S._position);
   rai::wait(0.05);
-  S.step(q, 0.05, S._position);
+  subStep(S,q, 0.05, S._position);
   rai::wait(0.05);
 
   arr Velo = (puck->getPosition()-Pos_Puck)/0.1;
@@ -255,7 +264,7 @@ void using_KOMO_for_PathPlanning(){
   //-- MODEL WORLD configuration, this is the data structure on which you represent
   rai::Configuration C;
   //C.addFile("../scenarios/project_challenge.g");
-  C.addFile("../Project/project_challenge.g");
+  C.addFile("project_challenge.g");
 
   //delete frames with certain names
   for(uint o=1; o<30; o++){
@@ -374,7 +383,7 @@ void using_KOMO_for_PathPlanning(){
     	S.getImageAndDepth(_rgb, _depth);
     }
 
-    S.step(q, tau, S._position);
+    subStep(S,q, tau, S._position);
   }
 ///////////////////////////////////////////////////////////////////////////
   cout << "------------------------------------------" << endl;
@@ -436,7 +445,7 @@ void using_KOMO_for_PathPlanning(){
       objblue->setPosition({0,0,0});
     }
 
-    S.step(q, tau, S._position);
+    subStep(S,q, tau, S._position);
   }
 ///////////////////////////////////////////////////////////////////////////
   cout << "------------------------------------------" << endl;
@@ -460,7 +469,7 @@ void using_KOMO_for_PathPlanning(){
   		} else{
         cout << "wait ";
         rai::wait(0.05);
-        S.step(q, 0.05, S._position);
+        subStep(S,q, 0.05, S._position);
       }
   	}
   	cout << "finishLoop" << endl;
@@ -511,7 +520,7 @@ void using_KOMO_for_PathPlanning(){
   		}
     	rai::wait(tau); //remove to go faster
     	old_Position = new_Position;
-    	S.step(q, tau, S._position);
+    	subStep(S,q, tau, S._position);
   	}
   	//rai::wait(); //TODO: otherwise the opengl gets hung up?
 
@@ -536,7 +545,7 @@ void using_KOMO_for_PathPlanning(){
   		}else{
         cout << "wait ";
         rai::wait(tau_small);
-        S.step(q, tau_small, S._position);
+        subStep(S,q, tau_small, S._position);
       }
   	}
     //Velo = calc_veloctiy(S,puck,q);
@@ -579,7 +588,7 @@ void using_KOMO_for_PathPlanning(){
   			rai::wait();
   		//}
     	rai::wait(tau_small); //remove to go faster
-    	S.step(q, tau_small, S._position);
+    	subStep(S,q, tau_small, S._position);
   	}
   	rai::wait(); //TODO: otherwise the opengl gets hung up?
 
@@ -597,7 +606,7 @@ void using_KOMO_for_PathPlanning(){
   	q = komoEND.getConfiguration_qOrg(t);
     cout << t << endl;
     rai::wait(tau); //remove to go faster
-    S.step(q, tau, S._position);
+    subStep(S,q, tau, S._position);
   }
   rai::wait(); //TODO: otherwise the opengl gets hung up?
 }
