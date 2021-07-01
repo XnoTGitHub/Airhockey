@@ -194,14 +194,14 @@ arr calc_veloctiy(rai::Simulation& S, rai::Frame* objblue, arr q){
     depthData2point(blueObjRelPos, Fxypxy);
     objblue->setRelativePosition(blueObjRelPos);
   }
-  rai::wait();
+  //rai::wait();
   arr Pos_Puck = objblue->getPosition();
   cout << "POS_Puck : " << Pos_Puck << endl;
   subStep(S,q, .05, S._position);
   subStep(S,q, .05, S._position);
   subStep(S,q, .05, S._position);
 
-  rai::wait();
+  //rai::wait();
   objblue->setRelativePosition({0,0,0});
   S.getImageAndDepth(_rgb, _depth);
   arr blueObjRelPos_two = findObject(_rgb, _depth, BLUE); //redObject's position in image space
@@ -319,7 +319,10 @@ void using_KOMO_for_PathPlanning(){
   cout << "relPos: " << redObjRelPos << endl;
   objred->setRelativePosition(redObjRelPos);
 
-  grab_Red(S,C,objred->getPosition(), tau);
+  arr Init_Pos_RED = objred->getPosition();
+  Init_Pos_RED(2) = 1.;
+
+  grab_Red(S,C,Init_Pos_RED, tau);
 
 
   S.cameraview().addSensor("camera_green");
@@ -329,7 +332,10 @@ void using_KOMO_for_PathPlanning(){
   cout << "relPos: " << greenObjRelPos << endl;
   objgreen->setRelativePosition(greenObjRelPos);
 
-  grab_Green(S,C,objgreen->getPosition(), tau);
+  arr Init_Pos_GREEN = objgreen->getPosition();
+  Init_Pos_GREEN(2) = 1.;
+
+  grab_Green(S,C,Init_Pos_GREEN, tau);
 
   arr Start_Pos_RED = objred->getPosition();
   arr Start_Pos_GREEN = objgreen->getPosition();
@@ -339,7 +345,7 @@ void using_KOMO_for_PathPlanning(){
   cout << "------------------------------------------" << endl;
   KOMO komo2;                     //create a solver
   komo2.setModel(C, true);        //tell it use C as the basic configuration (internally, it will create copies of C on which the actual optimization runs)
-  komo2.setTiming(4., NUMB_OF_STEPS, 5., 2);  //we want to optimize a single step (1 phase, 1 step/phase, duration=1, k_order=1)
+  komo2.setTiming(3, NUMB_OF_STEPS, 5., 2);  //we want to optimize a single step (1 phase, 1 step/phase, duration=1, k_order=1)
   komo2.add_qControlObjective({}, 2, 1.); //sos-penalize (with weight=1.) the finite difference joint velocity (k_order=1) between x[-1] (current configuration) and x[0] (to be optimized)
 
   S.cameraview().addSensor("camera_red");
@@ -356,35 +362,39 @@ void using_KOMO_for_PathPlanning(){
   cout << "objblue Pos: " << objblue->getPosition()  << "puck Pos: " << puck->getPosition() << endl;
   arr Pos_Set_Hight = objblue->getPosition();
   arr Shift_Konst = Pos_Set_Hight-objred->getPosition();
-  Pos_Set_Hight += Shift_Konst * .5;
+  //Pos_Set_Hight += Shift_Konst * .1;
   Pos_Set_Hight(2) = 1.05;
   objblue->setPosition(Pos_Set_Hight);
   cout << "SET_POS_HIGHT: " << Pos_Set_Hight << endl;
   arr A = {0.,0.,1.};
-  komo2.addObjective({0.,4.}, FS_position, {"R_gripperCenter"}, OT_eq, A, {0.,0.,1.});
+  komo2.addObjective({0.,3}, FS_position, {"R_gripperCenter"}, OT_eq, A, {0.,0.,1.});
   //komo2.addObjective({1.}, FS_position, {"R_gripperCenter"}, OT_eq,arr(2,3 {1.,0,0, 0,1,0}), Pos_Set_Hight);
-  komo2.addObjective({0.99}, FS_position, {"R_gripperCenter"}, OT_sos,{1e1}, Pos_Set_Hight);
+  komo2.addObjective({1.6}, FS_position, {"R_gripperCenter"}, OT_sos,{1e1}, Pos_Set_Hight-arr({1,3}, { 0.03,0,0}));
   //Gerade Halten
-  komo2.addObjective({1.,4.0}, FS_scalarProductXZ, {"R_gripperCenter","world"}, OT_eq);
-  komo2.addObjective({1.,4.0}, FS_scalarProductYZ, {"R_gripperCenter","world"}, OT_eq);
+  komo2.addObjective({1.,3}, FS_scalarProductXZ, {"R_gripperCenter","world"}, OT_eq);
+  komo2.addObjective({1.,3}, FS_scalarProductYZ, {"R_gripperCenter","world"}, OT_eq);
   //komo2.addObjective({1.}, FS_position, {"R_gripperCenter"}, OT_eq, {1e1}, {1.,2.,0.}, 1);
-  komo2.addObjective({4.}, FS_qItself, {}, OT_eq, {1e2}, {}, 1);
+  komo2.addObjective({3}, FS_qItself, {}, OT_eq, {1e2}, {}, 1);
   //komo2.verbose = 1;
   komo2.optimize();
   cout << "komo.verbose: " + komo2.verbose << endl;
   for(uint t=0;t<komo2.T;t++){
-  	//C.stepSwift();
+
     q = komo2.getConfiguration_qOrg(t);
     C.setJointState(q);
     C.watch(false, "optimized configuration");
+    //rai::wait();
     cout << t << " " << puck->getPosition() << endl;
     rai::wait(tau); //remove to go faster
     if(t%5==0){
     	S.getImageAndDepth(_rgb, _depth);
     }
+    if(t==50)
+      break;
 
     subStep(S,q, tau, S._position);
   }
+  rai::wait();
 ///////////////////////////////////////////////////////////////////////////
   cout << "------------------------------------------" << endl;
   cout << "-              * komo 3 *                -" << endl;
@@ -408,22 +418,28 @@ void using_KOMO_for_PathPlanning(){
   objblue->setPosition(Pos_Set_Hight);
   cout << "SET_POS_HIGHT: " << Pos_Set_Hight << endl;
   A = {0.,0.,1.};
+  rai::wait();
   KOMO komo3;                     //create a solver
   komo3.setModel(C, true);        //tell it use C as the basic configuration (internally, it will create copies of C on which the actual optimization runs)
-  komo3.setTiming(3., NUMB_OF_STEPS, 5., 2);  //we want to optimize a single step (1 phase, 1 step/phase, duration=1, k_order=1)
+  komo3.setTiming(2., NUMB_OF_STEPS, 5., 2);  //we want to optimize a single step (1 phase, 1 step/phase, duration=1, k_order=1)
   komo3.add_qControlObjective({}, 2, 1.); //sos-penalize (with weight=1.) the finite difference joint velocity (k_order=1) between x[-1] (current configuration) and x[0] (to be optimized)
+  //The RED pusher should go back to init
+  //komo3.addObjective({0.,2.}, FS_position, {"R_gripperCenter"}, OT_eq, A, {0.,0.,1.});
+  komo3.addObjective({1.,2.}, FS_position, {"R_gripperCenter"}, OT_sos,{1e1}, Init_Pos_RED);
+  komo3.addObjective({1.,2.}, FS_scalarProductXZ, {"R_gripperCenter","world"}, OT_eq);
+  komo3.addObjective({1.,2.}, FS_scalarProductYZ, {"R_gripperCenter","world"}, OT_eq);
 
   komo3.addObjective({0.,2.}, FS_position, {"L_gripperCenter"}, OT_eq, A, {0.,0.,1.});
   //komo2.addObjective({1.}, FS_position, {"R_gripperCenter"}, OT_eq,arr(2,3 {1.,0,0, 0,1,0}), Pos_Set_Hight);
-  komo3.addObjective({1.}, FS_position, {"L_gripperCenter"}, OT_sos,{1e1}, Pos_Set_Hight);
+  komo3.addObjective({.6}, FS_position, {"L_gripperCenter"}, OT_sos,{1e1}, Init_Pos_GREEN-arr({1,3}, { 0.2,-0.2,0}));
   //Gerade Halten
   komo3.addObjective({1.,2.}, FS_scalarProductXZ, {"L_gripperCenter","world"}, OT_eq);
   komo3.addObjective({1.,2.}, FS_scalarProductYZ, {"L_gripperCenter","world"}, OT_eq);
   //komo2.addObjective({1.}, FS_position, {"R_gripperCenter"}, OT_eq, {1e1}, {1.,2.,0.}, 1);
   //komo3.addObjective({2.}, FS_position, {"L_gripperCenter"}, OT_eq,{1e1}, Start_Pos_GREEN);
-  komo3.addObjective({3.}, FS_qItself, {}, OT_eq, {1e2}, {}, 1);
+  komo3.addObjective({2.}, FS_qItself, {}, OT_eq, {1e2}, {}, 1);
   komo3.optimize();
-
+  cout << "komo3" << endl;
   for(uint t=0;t<komo3.T;t++){
   	//C.stepSwift();
     q = komo3.getConfiguration_qOrg(t);
@@ -444,7 +460,7 @@ void using_KOMO_for_PathPlanning(){
     if(t==19){
       objblue->setPosition({0,0,0});
     }
-
+    //rai::wait();
     subStep(S,q, tau, S._position);
   }
 ///////////////////////////////////////////////////////////////////////////
@@ -506,20 +522,18 @@ void using_KOMO_for_PathPlanning(){
   	komoLOOPRed.addObjective({.5,time+1}, FS_scalarProductYZ, {"R_gripperCenter","world"}, OT_eq);
 
   	komoLOOPRed.optimize();
-  	arr old_Position = puck->getPosition();
 
   	for(uint t=0;t<komoLOOPRed.T;t++){
    		q = komoLOOPRed.getConfiguration_qOrg(t);
       C.setJointState(q);
       C.watch(false, "optimized configuration");
-  		arr new_Position = puck->getPosition();
 
-    	cout << t << ": " << old_Position << " : " << new_Position  << " i: " << i << endl;
+    	cout << t << ": " << puck->getPosition() << " i: " << i << endl;
     	if(t==(uint)time*NUMB_OF_STEPS && i==0){
   			rai::wait();
   		}
-    	rai::wait(tau); //remove to go faster
-    	old_Position = new_Position;
+    	//rai::wait(tau); //remove to go faster
+      rai::wait();
     	subStep(S,q, tau, S._position);
   	}
   	//rai::wait(); //TODO: otherwise the opengl gets hung up?

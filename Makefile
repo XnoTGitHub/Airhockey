@@ -1,4 +1,5 @@
 BASE = ../robotics-course/rai
+#BASE = ../rai
 
 OPENCV = 1
 RAI_CMAKE = 1
