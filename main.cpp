@@ -228,7 +228,7 @@ float calc_time(arr Velo, arr Position){
     return(0.25+(xpos*xpos))/Velo(1);
   }*/
 
-  return (0.3+(xpos*xpos)/1.5)/Velo(1);
+  return (0.3+(xpos*xpos)/0.5)/Velo(1);
 }
 /*arr calc_veloctiy(rai::Simulation& S, rai::Frame* puck, arr q){
 
@@ -243,6 +243,12 @@ float calc_time(arr Velo, arr Position){
   
   return Velo;
 }*/
+void subStep(rai::Simulation& S, const arr& q, double tau, double subSteps=100.) {
+  arr dq = (q-S.get_q())/subSteps;
+  for(uint s=0;s<subSteps;s++){
+    S.step(S.get_q()+dq, tau/subSteps, S._position);
+  }
+}
 
 //===========================================================================
 
@@ -490,11 +496,14 @@ void using_KOMO_for_PathPlanning(){
 
   	A = {0.,0.,1.};
   	komoLOOPRed.addObjective({0.,time+1}, FS_position, {"R_gripperCenter"}, OT_eq, A, {0.,0.,1.});
-    komoLOOPRed.addObjective({time-0.3}, FS_position, {"R_gripperCenter"}, OT_sos,{1e1}, Pos_Set_Hight+arr({1,3}, { 0,.2,0}));
-  
-   	komoLOOPRed.addObjective({time}, FS_position, {"R_gripperCenter"}, OT_sos,{1e1}, Pos_Set_Hight-arr({1,3}, { 0,.2,0}));
+    komoLOOPRed.addObjective({time-0.3}, FS_position, {"R_gripperCenter"}, OT_sos,{1e1}, Pos_Set_Hight+arr({1,3}, { 0,.1,0}));
+    //komoLOOPRed.addObjective({time-0.3}, FS_position, {"R_gripperCenter"}, OT_eq, 1e1*arr({2, 3}, {1, 0, 0, 0, 1, 0}), Pos_Set_Hight+arr({1,3}, { 0,.1,0})); 
+    //komoLOOPRed.addObjective({time}, FS_position, {"R_gripperCenter"}, OT_eq, 1e1*arr({2, 3}, {1, 0, 0, 0, 1, 0}), Pos_Set_Hight-arr({1,3}, { 0,.1,0})); 
+   	komoLOOPRed.addObjective({time}, FS_position, {"R_gripperCenter"}, OT_sos,{1e1}, Pos_Set_Hight-arr({1,3}, { 0,0.1,0}));
     komoLOOPRed.addObjective({.5,time+1}, FS_scalarProductXZ, {"R_gripperCenter","world"}, OT_eq);
   	komoLOOPRed.addObjective({.5,time+1}, FS_scalarProductYZ, {"R_gripperCenter","world"}, OT_eq);
+    //komoLOOPRed.addObjective({0.,time+1}, FS_position, {"R_gripperCenter"}, OT_ineq, {1e2}, {.55,.55,0.}, 1);
+    komoLOOPRed.addObjective({time-0.3, time+0.1}, FS_position, {"R_gripperCenter"}, OT_eq, 1e1*arr({2, 3}, {1, 0, 0, 0, 1, 0}) , {0, -0.1, 0}, 1);
 
   	komoLOOPRed.optimize();
   	arr old_Position = puck->getPosition();
@@ -506,7 +515,7 @@ void using_KOMO_for_PathPlanning(){
   		arr new_Position = puck->getPosition();
 
     	cout << t << ": " << old_Position << " : " << new_Position  << " i: " << i << endl;
-    	if(t==(uint)time*NUMB_OF_STEPS && i==0){
+    	if(t==(uint)(time*NUMB_OF_STEPS) && i==0){
   			rai::wait();
   		}
     	rai::wait(tau); //remove to go faster
@@ -564,9 +573,10 @@ void using_KOMO_for_PathPlanning(){
   	A = {0.,0.,1.};
   	komoLOOPGreen.addObjective({0.,komo_time}, FS_position, {"L_gripperCenter"}, OT_eq, A, {0.,0.,1.});
   	komoLOOPGreen.addObjective({time-0.3}, FS_position, {"L_gripperCenter"}, OT_sos,{1e1}, Pos_Set_Hight-arr({1,3}, { 0,0.2,0}));
-  	komoLOOPGreen.addObjective({time}, FS_position, {"L_gripperCenter"}, OT_sos,{1e1}, Pos_Set_Hight+arr({1,3}, { 0,.2,0}));
+  	komoLOOPGreen.addObjective({time}, FS_position, {"L_gripperCenter"}, OT_sos,{1e1}, Pos_Set_Hight+arr({1,3}, { 0,0.,0}));
     komoLOOPGreen.addObjective({0.5,komo_time}, FS_scalarProductXZ, {"L_gripperCenter","world"}, OT_eq);
   	komoLOOPGreen.addObjective({0.5,komo_time}, FS_scalarProductYZ, {"L_gripperCenter","world"}, OT_eq);
+    komoLOOPGreen.addObjective({time-0.3, time+0.1}, FS_position, {"L_gripperCenter"}, OT_eq, 1e1*arr({2, 3}, {1, 0, 0, 0, 1, 0}) , {0, 0.1, 0}, 1);
   	komoLOOPGreen.optimize();
 
   	for(uint t=0;t<komoLOOPGreen.T;t++){
@@ -575,11 +585,12 @@ void using_KOMO_for_PathPlanning(){
       C.watch(false, "optimized configuration");
   		
     	cout << t << ": " << puck->getPosition() << " i: " << i << endl;
-    	//if(t==(uint)((komo_time-1)*NUMB_OF_STEPS) && i==0){
+    	if(t==(uint)((komo_time-1)*NUMB_OF_STEPS) && i==0){
   			rai::wait();
-  		//}
+  		}
     	rai::wait(tau_small); //remove to go faster
     	S.step(q, tau_small, S._position);
+      //subStep(S,q,tau_small);
   	}
   	rai::wait(); //TODO: otherwise the opengl gets hung up?
 
