@@ -266,18 +266,19 @@ void using_KOMO_for_PathPlanning(){
   //C.addFile("../scenarios/project_challenge.g");
   C.addFile("project_challenge.g");
 
-  //delete frames with certain names
-  for(uint o=1; o<30; o++){
-    rai::Frame *f = C[STRING("obj"<<o)];
-    if(f) delete f;
-  }
-  rai::Frame *puck = C["obj0"];
+//  //delete frames with certain names
+//  for(uint o=1; o<30; o++){
+//    rai::Frame *f = C[STRING("obj"<<o)];
+//    if(f) delete f;
+//  }
+  rai::Frame *puck = C.addFrame("obj0");
   puck->setColor({0,0,1.}); //set the color of one objet to blue
   puck->setShape(rai::ST_cylinder, {.02,0.05});
   puck->setPosition({0, 0.5, 1.});
   puck->setMass(0.1);
   puck->setContact(1); // What is this line really doing?
-  //puck->ats.newNode<double>("restitution", 1.); 
+  puck->addAttribute("friction", .01);
+  puck->addAttribute("restitution", .5);
 
   rai::Frame *pusher_red = C["stick_red"];
   pusher_red->setColor({1.,0,0}); //set the color of one objet to red!
