@@ -228,7 +228,93 @@ float calc_time(arr Velo, arr Position){
     return(0.25+(xpos*xpos))/Velo(1);
   }*/
 
-  return (0.3+(xpos*xpos)/0.5)/Velo(1);
+  //////
+  //New way to compute the time with the knowledge of x²+y²=r² and X_t = V*t+X_0
+
+  float R = 0.5;
+
+  arr V = -Velo/1.0;
+  arr P = -Position;
+  P(1) += -1.1;
+
+  float a = V(0)*V(0) + V(1)*V(1);
+  float b = 2*(P(0)*V(0)+P(1)*V(1));//1.1 is half of the length of the table
+  float c = (P(0)*P(0))+(P(1)*P(1)) - R*R;
+
+  //cout << "a: " << a << " b: " << b << " c: " << c << endl;
+  //cout << "b*b: " << b*b << " 4*a*c: " << 4*a*c << endl;
+  float t_new_1 = (-b + sqrt(b*b-4*a*c))/(2*a);
+  float t_new_2 = (-b - sqrt(b*b-4*a*c))/(2*a);
+
+  /*cout << "t_new_1: " << t_new_1 << endl;
+  cout << "t_new_2: " << t_new_2 << endl;
+
+  cout << "t_line: " << -P(1)/V(1) << endl;*/
+
+  ///
+  V = -Velo/1.0;
+  P = -Position;
+  P(1) += 1.1;
+
+  a = V(0)*V(0) + V(1)*V(1);
+  b = 2*(P(0)*V(0)+P(1)*V(1));//1.1 is half of the length of the table
+  c = (P(0)*P(0))+(P(1)*P(1)) - R*R;
+
+  cout << "a: " << a << " b: " << b << " c: " << c << endl;
+  cout << "b*b: " << b*b << " 4*a*c: " << 4*a*c << endl;
+  t_new_1 = (-b + sqrt(b*b-4*a*c))/(2*a);
+  t_new_2 = (-b - sqrt(b*b-4*a*c))/(2*a);
+
+  cout << "t_new_1: " << t_new_1 << endl;
+  cout << "t_new_2: " << t_new_2 << endl;
+
+  cout << "t_line: " << -P(1)/V(1) << endl;
+
+  float time_of_colission = t_new_2;
+  if(time_of_colission != time_of_colission)
+    time_of_colission = -P(1)/V(1);
+
+  cout << "time_of_colission: " << time_of_colission << endl;
+    ///
+  /*V = -Velo/1.0;
+  P = Position;
+  P(1) -= 1.1;
+
+  a = V(0)*V(0) + V(1)*V(1);
+  b = 2*(P(0)*V(0)+P(1)*V(1));//1.1 is half of the length of the table
+  c = (P(0)*P(0))+(P(1)*P(1)) - R*R;
+
+  cout << "a: " << a << " b: " << b << " c: " << c << endl;
+  cout << "b*b: " << b*b << " 4*a*c: " << 4*a*c << endl;
+  t_new_1 = (-b + sqrt(b*b-4*a*c))/(2*a);
+  t_new_2 = (-b - sqrt(b*b-4*a*c))/(2*a);
+
+  cout << "t_new_1: " << t_new_1 << endl;
+  cout << "t_new_2: " << t_new_2 << endl;
+
+  cout << "t_line: " << -P(1)/V(1) << endl;
+    ///
+  V = -Velo/1.0;
+  P = Position;
+  P(1) += 1.1;
+
+  a = V(0)*V(0) + V(1)*V(1);
+  b = 2*(P(0)*V(0)+P(1)*V(1));//1.1 is half of the length of the table
+  c = (P(0)*P(0))+(P(1)*P(1)) - R*R;
+
+  cout << "a: " << a << " b: " << b << " c: " << c << endl;
+  cout << "b*b: " << b*b << " 4*a*c: " << 4*a*c << endl;
+  t_new_1 = (-b + sqrt(b*b-4*a*c))/(2*a);
+  t_new_2 = (-b - sqrt(b*b-4*a*c))/(2*a);
+
+  cout << "t_new_1: " << t_new_1 << endl;
+  cout << "t_new_2: " << t_new_2 << endl;
+
+  cout << "t_line: " << -P(1)/V(1) << endl;*/
+
+  //return (0.3+(xpos*xpos)/0.5)/Velo(1);
+
+  return time_of_colission;
 }
 /*arr calc_veloctiy(rai::Simulation& S, rai::Frame* puck, arr q){
 
@@ -499,7 +585,7 @@ void using_KOMO_for_PathPlanning(){
     komoLOOPRed.addObjective({time-0.3}, FS_position, {"R_gripperCenter"}, OT_sos,{1e1}, Pos_Set_Hight+arr({1,3}, { 0,.1,0}));
     //komoLOOPRed.addObjective({time-0.3}, FS_position, {"R_gripperCenter"}, OT_eq, 1e1*arr({2, 3}, {1, 0, 0, 0, 1, 0}), Pos_Set_Hight+arr({1,3}, { 0,.1,0})); 
     //komoLOOPRed.addObjective({time}, FS_position, {"R_gripperCenter"}, OT_eq, 1e1*arr({2, 3}, {1, 0, 0, 0, 1, 0}), Pos_Set_Hight-arr({1,3}, { 0,.1,0})); 
-   	komoLOOPRed.addObjective({time}, FS_position, {"R_gripperCenter"}, OT_sos,{1e1}, Pos_Set_Hight-arr({1,3}, { 0,0.1,0}));
+   	komoLOOPRed.addObjective({time}, FS_position, {"R_gripperCenter"}, OT_sos,{1e1}, Pos_Set_Hight-arr({1,3}, { 0,0.,0}));
     komoLOOPRed.addObjective({.5,time+1}, FS_scalarProductXZ, {"R_gripperCenter","world"}, OT_eq);
   	komoLOOPRed.addObjective({.5,time+1}, FS_scalarProductYZ, {"R_gripperCenter","world"}, OT_eq);
     //komoLOOPRed.addObjective({0.,time+1}, FS_position, {"R_gripperCenter"}, OT_ineq, {1e2}, {.55,.55,0.}, 1);
@@ -577,7 +663,12 @@ void using_KOMO_for_PathPlanning(){
     komoLOOPGreen.addObjective({0.5,komo_time}, FS_scalarProductXZ, {"L_gripperCenter","world"}, OT_eq);
   	komoLOOPGreen.addObjective({0.5,komo_time}, FS_scalarProductYZ, {"L_gripperCenter","world"}, OT_eq);
     komoLOOPGreen.addObjective({time-0.3, time+0.1}, FS_position, {"L_gripperCenter"}, OT_eq, 1e1*arr({2, 3}, {1, 0, 0, 0, 1, 0}) , {0, 0.1, 0}, 1);
-  	komoLOOPGreen.optimize();
+  	
+    komoLOOPGreen.addObjective({time}, FS_position, {"R_gripperCenter"}, OT_sos,{1e1}, Start_Pos_RED);
+    komoLOOPGreen.addObjective({}, FS_scalarProductXZ, {"R_gripperCenter","world"}, OT_eq);
+    komoLOOPGreen.addObjective({}, FS_scalarProductYZ, {"R_gripperCenter","world"}, OT_eq);
+
+    komoLOOPGreen.optimize();
 
   	for(uint t=0;t<komoLOOPGreen.T;t++){
   		q = komoLOOPGreen.getConfiguration_qOrg(t);
